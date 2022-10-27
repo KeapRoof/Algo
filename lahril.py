@@ -172,7 +172,7 @@ def min(tab):
         i = i+1
     return min
 
-
+# Debut des tri
 def tri_selection(tab):
     n = len(tab)
     i = 0
