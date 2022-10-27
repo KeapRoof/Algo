@@ -1,7 +1,3 @@
-from ast import While
-from ctypes.wintypes import SIZE
-from locale import dcgettext
-from this import d
 from numpy import *
 
 def min(a,b,c):
