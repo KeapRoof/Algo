@@ -187,6 +187,7 @@ def tri_selection(tab):
         i = i+1
     return tab
 
+
 def tri_insertion(tab):
     n = len(tab)
     i = 1
@@ -213,6 +214,8 @@ def tri_bulle(tab):
             j = j+1
         i = i+1
     return tab
+
+#fin des tri
 
 def nb_premier(n):
     i = 2
