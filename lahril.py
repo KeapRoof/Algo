@@ -1,7 +1,3 @@
-from ast import While
-from ctypes.wintypes import SIZE
-from locale import dcgettext
-from this import d
 from numpy import *
 #test
 
@@ -222,3 +218,22 @@ def nb_premier(n):
             return False
         i = i+1
     return True
+
+def juste_prix():
+    import random
+    n = random.randint(1,100)
+
+    i = 0
+    while i < 5:
+        x = int(input("Entrez un nombre"))
+        if x == n:
+            print("Bravo")
+            return True
+        else:
+            if x < n:
+                print("Plus grand")
+            else:
+                print("Plus petit")
+        i = i+1
+    print("Perdu")
+    return False
