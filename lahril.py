@@ -218,11 +218,10 @@ def nb_premier(n):
             return False
         i = i+1
     return True
-
+#jeu du juste prix
 def juste_prix():
     import random
     n = random.randint(1,100)
-
     i = 0
     while i < 5:
         x = int(input("Entrez un nombre"))
@@ -237,3 +236,15 @@ def juste_prix():
         i = i+1
     print("Perdu")
     return False
+# crible d'Erathostene
+def crible(n):
+    crib = [True]*n
+    crib[0] = False
+    if n>= 2:
+        crib[1]= False
+    cpt = 2
+    while cpt < n:
+        crib[cpt*2] = False
+        cpt = cpt+1
+    return crib
+
