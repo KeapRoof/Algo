@@ -210,7 +210,7 @@ def tri_bulle(tab):
             j = j+1
         i = i+1
     return tab
-
+#Nombre premier
 def nb_premier(n):
     i = 2
     while i < n:
