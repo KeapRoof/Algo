@@ -129,19 +129,6 @@ def inverse(tab):
         i = i+1
     return tab
 
-def crible(crib):
-    n = len(crib)
-    c=0
-    while c != n:
-        crib[c] = True
-    crib[0] = False
-    if n>= 2:
-        crib[1]= False
-    cpt = 2
-    while cpt < n:
-        crib[cpt*2] = False
-        cpt = cpt+1
-    return crib
 
 def recherche_dicho(tab,e):
     n = len(tab)
@@ -236,15 +223,44 @@ def juste_prix():
         i = i+1
     print("Perdu")
     return False
-# crible d'Erathostene
-def crible(n):
-    crib = [True]*n
-    crib[0] = False
-    if n>= 2:
-        crib[1]= False
-    cpt = 2
-    while cpt < n:
-        crib[cpt*2] = False
-        cpt = cpt+1
-    return crib
 
+#crible d'Erathostene
+
+def crible(n):
+    tab = [True]*n
+    tab[0] = False
+    tab[1] = False
+    i = 2
+    while i < n:
+        if tab[i] == True:
+            j = 2
+            while i*j < n:
+                tab[i*j] = False
+                j = j+1
+        i = i+1
+    return tab
+
+def nb_premier_crible(n):
+    tab = crible(n)
+    i = 0
+    nb = 0
+    while i < n:
+        if tab[i] == True:
+            nb = nb+1
+        i = i+1
+    return nb
+
+#tri selection
+def tri_selection(tab):
+    n = len(tab)
+    i = 0
+    while i < n:
+        j = i+1
+        while j < n:
+            if tab[i] > tab[j]:
+                temp = tab[i]
+                tab[i] = tab[j]
+                tab[j] = temp
+            j = j+1
+        i = i+1
+    return tab
