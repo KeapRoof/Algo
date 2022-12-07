@@ -264,3 +264,34 @@ def tri_selection(tab):
             j = j+1
         i = i+1
     return tab
+
+def fibonacci_rec(n):
+    if n == 0:
+        return 1
+    if n == 1:
+        return 1
+    else:
+        return fibonacci_rec(n-1)+fibonacci_rec(n-2)
+
+def palindrome_rec(tab):
+    if len(tab) == 0 or len(tab) == 1:
+        return True
+    else:
+        if tab[0] == tab[-1]:
+            return palindrome_rec(tab[1:-1])
+        else:
+            return False
+
+def recherche_dicho_rec(tab):
+    if len(tab) == 0:
+        return False
+    else:
+        if tab[len(tab)//2] == e:
+            return True
+        else:
+            if tab[len(tab)//2] > e:
+                return recherche_dicho_rec(tab[len(tab)//2:])
+            else:
+                return recherche_dicho_rec(tab[:len(tab)//2])
+
+palindrome_rec([1,2,3,2,1])
