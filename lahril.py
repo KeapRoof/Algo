@@ -294,4 +294,18 @@ def recherche_dicho_rec(tab):
             else:
                 return recherche_dicho_rec(tab[:len(tab)//2])
 
-palindrome_rec([1,2,3,2,1])
+def quotient():
+    print("Entrez le dividende")
+    a = input()
+    print("Entrez le diviseur")
+    b = input()
+    if b == 0:
+        print("Le diviseur est nul !")
+        return 1
+    if b != 0 and (a < 0 and b < 0):
+        print("Un des deux nombre est negatif")    
+        return 2
+    else:
+        q = a / b
+        print("Le quotient de ",a,"par",b,"est",q)
+        return 0
