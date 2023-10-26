@@ -309,3 +309,15 @@ def quotient():
         q = a / b
         print("Le quotient de ",a,"par",b,"est",q)
         return 0
+
+def occurence_caractère(text,car):
+    i = 0
+    nb = 0
+    while i < len(text):
+        if text[i] == car:
+            nb = nb+1
+        i = i+1
+    return nb
+
+test = "S1;M;4, 25, 50;10, 31, 37;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;5, 26, 35;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;10, 25, 35;0;0;8, 18, 23;0;0;0;0;0;0;0;0;0;0;0;0"
+print(occurence_caractère(test,"0"))

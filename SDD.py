@@ -332,10 +332,83 @@ class LPile():
                 print(self.sommet())
                 self.depiller()
                 
-
     def inverse_pile(self):
         pile = LPile()
         while not self.est_vide():
             pile.empiller(self.sommet())
             self.depiller()
         return pile
+    
+class Tfile:
+
+    def __init__(self):
+        self.tete = None
+        self.qeue = None
+
+    def sortie(self):
+        if self.tete.next == None:
+            del self.tete
+            self = Tfile()
+        else:
+            suivant = self.tete.next
+            del self.tete
+            self.tete = suivant
+
+    def entree(self,val):
+        maillon = Maillon(val)
+        if self.tete == None:
+            self.tete = maillon
+            self.qeue = maillon
+        else:
+            self.qeue.next = maillon
+            self.qeue = maillon
+
+    def est_vide(self):
+        return self.tete == None
+    
+    def est_plein(self):
+        return False
+    
+    def lire_deb(self):
+            return self.tete.val
+    
+    def affiche_f(self):
+        file2  = self
+        while not file2.est_vide():
+            print(file2.lire_deb())
+            file2.sortie()
+
+    def affiche_f2(self):
+        self.entree("Stop")
+        while self.lire_deb() != "Stop":
+            print(self.lire_deb())
+            self.entree(self.lire_deb())
+            self.sortie()
+
+    def recherche_rec(self,val):
+        if self.est_vide():
+            return False
+        elif self.lire_deb() == val:
+            return True
+        else:
+            self.sortie()
+            return self.recherche_rec(val)
+        
+    def segmenter(self):
+        Paire = Tfile()
+        Impaire = Tfile()
+        while not self.est_vide():
+            if self.lire_deb()%2 == 0:
+                Paire.entree(self.lire_deb())
+            else:
+                Impaire.entree(self.lire_deb())
+            self.sortie()
+        
+        Resultat = Tfile()
+        while not Paire.est_vide():
+            Resultat.entree(Paire.lire_deb())
+            Paire.sortie()
+        while not Impaire.est_vide():
+            Resultat.entree(Impaire.lire_deb())
+            Impaire.sortie()
+        return Resultat
