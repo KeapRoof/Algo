@@ -301,6 +301,7 @@ class Tpile():
         return self.pile[self.isommet]
 
 class LPile():
+
     def __init__(self):
         self.sommet = None
     
@@ -412,3 +413,116 @@ class Tfile:
             Resultat.entree(Impaire.lire_deb())
             Impaire.sortie()
         return Resultat
+    
+#Algo avancé S3
+
+class Arbre:
+
+    #Taille de l'arbre = nombre de noeuds
+    #Hauteur de l'arbre = nombre de noeuds sur le chemin le plus long entre la racine et une feuille
+
+    def __init__(self):
+        self.racine = None
+
+    def est_vide(self):
+        return self.racine == None
+    
+    def est_plein(self):
+        return False
+    
+    def inserer(self,val):
+        if self.est_vide():
+            self.racine = Noeud(val)
+        else:
+            temp = self.racine
+            while True:
+                if temp.val > val:
+                    if temp.gauche == None:
+                        temp.gauche = Noeud(val)
+                        break
+                    else:
+                        temp = temp.gauche
+                else:
+                    if temp.droit == None:
+                        temp.droit = Noeud(val)
+                        break
+                    else:
+                        temp = temp.droit
+    
+    def rechercher(self,val):
+        if self.est_vide():
+            return False
+        else:
+            temp = self.racine
+            while temp != None:
+                if temp.val == val:
+                    return True
+                elif temp.val > val:
+                    temp = temp.gauche
+                else:
+                    temp = temp.droit
+            return False
+
+    def parcours_pre(self):
+        res = ""
+        pile = LPile()
+        temp = self.racine
+        while True:
+            while temp != None:
+                res += str(temp.val) + " "
+                pile.empiller(temp)
+                temp = temp.gauche
+            if pile.est_vide():
+                break
+            temp = pile.sommet()
+            pile.depiller()
+            temp = temp.droit
+
+    def parcours_in(self):
+        res = ""
+        pile = LPile()
+        temp = self.racine
+        while True:
+            while temp != None:
+                pile.empiller(temp)
+                temp = temp.gauche
+            if pile.est_vide():
+                break
+            temp = pile.sommet()
+            pile.depiller()
+            res += str(temp.val) + " "
+            temp = temp.droit
+        return res
+    
+    def parcours_post(self):
+        res = ""
+        pile = LPile()
+        temp = self.racine
+        while True:
+            while temp != None:
+                pile.empiller(temp)
+                temp = temp.gauche
+            if pile.est_vide():
+                break
+            temp = pile.sommet()
+            pile.depiller()
+            temp = temp.droit
+            res += str(temp.val) + " "
+        return res
+    
+    def parcours_largeur(self):
+        res = ""
+        file = Tfile()
+        file.entree(self.racine)
+        
+
+
+class Noeud:
+
+    def __init__(self,val):
+        self.val = val
+        self.gauche = None
+        self.droit = None
+
+    def est_feuille(self):
+        return self.gauche == None and self.droit == None
