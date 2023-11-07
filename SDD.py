@@ -289,12 +289,13 @@ class Tpile():
         return self.isommet == len(self.pile)-1
     
     def empiler(self,val):
-        self.isommet += 1
-        self.pile[self.isommet] = val
+        self.isommet = self.isommet + 1
+        self.pile.append(val)
         return True
 
     def depiler(self):
         self.isommet -= 1
+        del self.pile[-1]
         return True
     
     def sommet(self):
@@ -465,18 +466,19 @@ class Arbre:
 
     def parcours_pre(self):
         res = ""
-        pile = LPile()
+        pile = []
         temp = self.racine
         while True:
-            while temp != None:
+            while temp:
                 res += str(temp.val) + " "
-                pile.empiller(temp)
+                pile.append(temp)
                 temp = temp.gauche
-            if pile.est_vide():
+            if not pile:
                 break
-            temp = pile.sommet()
-            pile.depiller()
+            temp = pile[-1]
+            pile = pile[:-1]
             temp = temp.droit
+        return res
 
     def parcours_in(self):
         res = ""
@@ -496,7 +498,7 @@ class Arbre:
     
     def parcours_post(self):
         res = ""
-        pile = LPile()
+        pile = []
         temp = self.racine
         while True:
             while temp != None:
@@ -505,7 +507,7 @@ class Arbre:
             if pile.est_vide():
                 break
             temp = pile.sommet()
-            pile.depiller()
+            pile.depiler()
             temp = temp.droit
             res += str(temp.val) + " "
         return res
@@ -514,8 +516,10 @@ class Arbre:
         res = ""
         file = Tfile()
         file.entree(self.racine)
-        
 
+    def hauteur(self):
+        if self.est_vide():
+            return 0
 
 class Noeud:
 
@@ -526,3 +530,16 @@ class Noeud:
 
     def est_feuille(self):
         return self.gauche == None and self.droit == None
+
+
+pile = Tpile()
+
+pile.empiler(1)
+
+print(pile.sommet())
+
+print(pile.depiler())
+
+pile.empiler(2)
+
+print(pile.sommet())
