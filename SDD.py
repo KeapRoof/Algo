@@ -1,4 +1,5 @@
 class Maillon:
+    
     def __init__(self, data):
         self.data = data
         self.next = None
@@ -512,14 +513,71 @@ class Arbre:
             res += str(temp.val) + " "
         return res
     
-    def parcours_largeur(self):
+    
+    def parcours_niveaux(self):
         res = ""
         file = Tfile()
         file.entree(self.racine)
+        while not file.est_vide():
+            temp = file.lire_deb()
+            file.sortie()
+            res += str(temp.val) + " "
+            if temp.gauche != None:
+                file.entree(temp.gauche)
+            if temp.droit != None:
+                file.entree(temp.droit)
+        return res
+    
+    def parcours_niveaux_count(self):
+        res = 0
+        file = Tfile()
+        file.entree(self.racine)
+        while not file.est_vide():
+            temp = file.lire_deb()
+            file.sortie()
+            res += 1
+            if temp.gauche != None:
+                file.entree(temp.gauche)
+            if temp.droit != None:
+                file.entree(temp.droit)
 
     def hauteur(self):
         if self.est_vide():
             return 0
+        
+
+    def taille_rec(self,noeud):
+        #nb de noeuds
+        if noeud == None:
+            return 0
+        else:
+            return 1 + self.taille_rec(noeud.gauche) + self.taille_rec(noeud.droit)
+
+    def count_nb_noeuds(self):
+        if self.est_vide():
+            return 0
+        else:
+            pile = LPile()
+            pile.empiller(self.racine)
+            res = 0
+            while not pile.est_vide():
+                temp = pile.sommet()
+                pile.depiler()
+                res += 1
+                if temp.gauche != None:
+                    pile.empiller(temp.gauche)
+                if temp.droit != None:
+                    pile.empiller(temp.droit)
+            return res
+        
+    def recherche_rec(self, noeud, val):
+        if noeud is None:
+            return False
+        if noeud.val == val:
+            return True
+        if val != noeud.val:
+            return self.recherche_rec(noeud.gauche, val) or self.recherche_rec(noeud.droit, val)
+        
 
 class Noeud:
 
@@ -530,16 +588,12 @@ class Noeud:
 
     def est_feuille(self):
         return self.gauche == None and self.droit == None
+    
+a = Arbre()
+a.inserer(5)
+a.inserer(3)
+a.inserer(7)
+a.inserer(2)
+a.inserer(4)
 
-
-pile = Tpile()
-
-pile.empiler(1)
-
-print(pile.sommet())
-
-print(pile.depiler())
-
-pile.empiler(2)
-
-print(pile.sommet())
+print(a.parcours_pre())
