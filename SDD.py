@@ -576,8 +576,10 @@ class Arbre:
         if noeud.val == val:
             return True
         if val != noeud.val:
-            return self.recherche_rec(noeud.gauche, val) or self.recherche_rec(noeud.droit, val)
+            return (self.recherche_rec(noeud.gauche, val) or self.recherche_rec(noeud.droit, val))
         
+    
+
 
 class Noeud:
 
@@ -597,3 +599,60 @@ a.inserer(2)
 a.inserer(4)
 
 print(a.parcours_pre())
+
+def mirror(nd):
+    if(nd.fg != None or nd.fd != None):
+        temp = nd.fg
+        nd.fg = nd.fd
+        nd.fd = temp
+        mirror(nd.fg)
+        mirror(nd.fd)
+
+# def rec_hauteur(nd,val):
+    # if(nd.fg =! None or nd.fd != None):
+        # val += 1
+        # rec_hauteur(nd.fg,val)
+        # rec_hauteur(nd.fd,val)
+
+#def_rec_hauteur(nd):
+ #   if nd == None:
+  #      return -1
+  #  else:
+   #     return 1 + max(rec_hauteur(nd.fg),rec_hauteur(nd.fd))
+
+def sup_plus_droit_rec(nd):
+        if nd.fd == None & nd.fg == None:
+            del nd
+        if nd.fd == None:
+            return sup_plus_droit_rec(nd.fg)
+        else:
+            return sup_plus_droit_rec(nd.fd)
+
+def inserer_plus_a_droite(nd,nd_insert):
+    if nd.fd == None & nd.fg == None:
+        nd.fd =  nd_insert
+    if nd.fd == None:
+            return sup_plus_droit_rec(nd.fg)
+    else:
+        return sup_plus_droit_rec(nd.fd)
+    
+def inserer_plus_a_gauche(nd,nd_insert):
+    if nd.fd == None & nd.fg == None:
+        nd.fg =  nd_insert
+    if nd.fg == None:
+            return sup_plus_droit_rec(nd.fd)
+    else:
+        return sup_plus_droit_rec(nd.fg)
+
+def supprimer(self, noeud, val, parent=None):
+    if noeud is None:
+        return False
+    if noeud.val == val:
+        inserer_plus_a_droite(parent,noeud.fd)
+        inserer_plus_a_gauche(parent,noeud.fg)
+        return True
+    if val != noeud.val:
+            return (recherche_rec(noeud.gauche, val,noeud) or recherche_rec(noeud.droit, val,noeud))
+    
+
+
