@@ -1,3 +1,6 @@
+from json.encoder import INFINITY
+
+
 class Maillon:
     
     def __init__(self, data):
@@ -528,6 +531,56 @@ class Arbre:
                 file.entree(temp.droit)
         return res
     
+    def parcours_pre(abr):
+        res = 0
+        file = Tpile()
+        temp = abr
+        while True:
+            while temp != None:
+                res = res + temp.val
+                file.empiller(temp)
+                temp = temp.fg
+                if(pile.est_vide()):
+                    break
+                temp = pile.sommet()
+                pile.depiler()
+                temp.droit
+        return res
+    
+
+    def inf(abr):
+        res = 0
+        pile = Pile()
+        temp = abr
+        while True:
+            while(temp != None):
+                pile.empiler(temp)
+                temp = temp.fg
+                if(pile.est_vide()):
+                    break
+                temp = pile.sommet()
+                pile.depiler()
+                res = res + temp.val
+                temp = temp.fd
+        return res
+    
+    def post(abr):
+        res = 0
+        pile = Pile()
+        temp = abr
+        while True:
+            while temp != None:
+                pile.empiler(temp)
+                temp = temp.fg
+                if(pile.est_vide()):
+                    break
+                temp = pile.sommet()
+                pile.depiler()
+                temp = temp.fd
+                res = temp.val + res
+        return res
+
+    
     def parcours_niveaux_count(self):
         res = 0
         file = Tfile()
@@ -608,12 +661,7 @@ def mirror(nd):
         mirror(nd.fg)
         mirror(nd.fd)
 
-# def rec_hauteur(nd,val):
-    # if(nd.fg =! None or nd.fd != None):
-        # val += 1
-        # rec_hauteur(nd.fg,val)
-        # rec_hauteur(nd.fd,val)
-
+# nb_comp += 1
 #def_rec_hauteur(nd):
  #   if nd == None:
   #      return -1
@@ -653,6 +701,273 @@ def supprimer(self, noeud, val, parent=None):
         return True
     if val != noeud.val:
             return (recherche_rec(noeud.gauche, val,noeud) or recherche_rec(noeud.droit, val,noeud))
+
+def trier_tab_abr(tab):
+    arbre = Arbre()
+    for i in tab:
+        planter(arbre,i)
+    return arbre.parcours_in()
+
+tab = [5,3,7,2,4]
+
+print(trier_tab_abr(tab))
+
+def planter(abr,val):
+    #Ajouter un noeud à l'arbre binaire de recherche
+    if abr.est_vide():
+        abr.racine = Noeud(val)
+    else:
+        temp = abr.racine
+        while True:
+            if temp.val > val:
+                if temp.gauche == None:
+                    temp.gauche = Noeud(val)
+                    break
+                else:
+                    temp = temp.gauche
+            else:
+                if temp.droit == None:
+                    temp.droit = Noeud(val)
+                    break
+                else:
+                    temp = temp.droit
+
+
+def min_droit(nd):
+    #Recherche la valeur minimale du sous-arbre droit
+    min = INFINITY
+    temp = nd.droit
+    min = temp.val
+    while temp != None:
+        if temp.val < min:
+            min = temp.val
+        temp = temp.gauche
+    return min
+
+def suppresion(abr,val):
+    #Supprimer un noeud de l'arbre binaire de recherche
+    if abr.est_vide():
+        return False
+    else:
+        temp = abr.racine
+        while temp != None:
+            if temp.val == val:
+                #Cas 1: le noeud est une feuille
+                if temp.gauche == None & temp.droit == None:
+                    del temp
+                    return True
+                #Cas 2: le noeud a un seul fils
+                elif temp.gauche == None:
+                    temp = temp.droit
+                    suppresion(temp.gauche,temp.val)
+                    return True
+                elif temp.droit == None:
+                    temp = temp.gauche
+                    suppresion(temp.droit,temp.val)
+                    return True
+                #Cas 3: le noeud a deux fils
+                else:
+                    temp.val = min_droit(temp)
+                    suppresion(temp.droit,temp.val)
+                    return True
+            elif temp.val > val:
+                temp = temp.gauche
+            else:
+                temp = temp.droit           
+        return False
     
 
+def rotation_gauche(nd):
+    #Rotation gauche
+    temp = nd.droit
+    nd.droit = temp.gauche
+    temp.gauche = nd
+    return temp
 
+
+def rotation_droite(nd):
+    #Rotation droite
+    temp = nd.gauche
+    nd.gauche = temp.droit
+    temp.droit = nd
+    return temp
+
+def equilibrage(nd):
+    #cas 1: rotation gauche
+    if nd.gauche.hauteur() - nd.droit.hauteur() == 2:
+        if nd.gauche.gauche.hauteur() > nd.gauche.droit.hauteur():
+            rotation_droite(nd)
+        else:
+            nd.gauche = rotation_gauche(nd.gauche)
+            rotation_droite(nd)
+    #cas 2: rotation droite
+    elif nd.droit.hauteur() - nd.gauche.hauteur() == 2:
+        if nd.droit.droit.hauteur() > nd.droit.gauche.hauteur():
+            rotation_gauche(nd)
+        else:
+            nd.droit = rotation_droite(nd.droit)
+            rotation_gauche(nd)
+    #cas 3: double rotation gauche - droite
+    elif nd.gauche.hauteur() - nd.droit.hauteur() == 2:
+        nd.gauche = rotation_gauche(nd.gauche)
+        rotation_droite(nd)
+    #cas 4: double rotation droite - gauche
+    elif nd.droit.hauteur() - nd.gauche.hauteur() == 2:
+        nd.droit = rotation_droite(nd.droit)
+        rotation_gauche(nd)
+
+
+def rotation_droite(nd):
+    #Rotation droite
+    temp = nd.gauche.gauche
+    temp.droit = nd
+    temp.dg = nd.gauche
+
+def rotation_gauche(nd):
+    #Rotation gauche
+    temp = nd.droit.droit
+    temp.gauche = nd
+    temp.dd = nd.droit
+    
+def is_double_gauche(nd):
+    return nd.gauche != None and nd.gauche.gauche != None
+
+def is_double_droite(nd):
+    return nd.droit != None and nd.droit.droit != None
+
+if(is_double_gauche(nd)):
+    rotation_droite(nd)
+
+if(is_double_droite(nd)):
+    rotation_gauche(nd)
+
+def equilibrer(nd):
+    if(is_double_gauche(nd)):
+        rotation_droite(nd)
+    if(is_double_droite(nd)):
+        rotation_gauche(nd)
+
+def composante_connexe_non_oriente(graphe):
+    nb_comp = 0
+    parcourue = []
+    temp = graphe.entree
+    while(True):
+        while(temp != None and temp not in parcourue):
+            nb_comp += 1
+            parcourue.append(temp)
+            current = temp.ls
+            while(current != None):
+                parcourue.append(current.val)
+                current = current.next
+        temp = temp.next
+        parcourue = []
+        if(temp == None):
+            break
+    return nb_comp
+
+def composante_connexe_orienté(graphe):
+    nb_comp = 0
+    temp = graphe.entre
+    while(True):
+        while(temp != None and (temp.ariv == None or temp.dep == None)):
+            nb_comp += 1
+            current = temp.ls
+            temp.dep = True # PLUS
+            while(current != None):
+                marque_ariv(graphe,current.val) # MOINS
+                current = current.next
+            temp = temp.next
+        if(temp == None):
+            break
+    return nb_comp
+
+def marque_ariv(graphe,nd):
+    temp = graphe.entree
+    while(temp != None and temp != nd.val):
+        temp = temp.next
+    temp.ariv = True
+
+def sous_arbre_poids_min(graphe):
+    res = Arbre()
+    sum = 0
+    temp = graphe.entree
+    while(temp != None):
+        if(temp.ls != None):
+            min = temp.ls.val
+            current = temp.ls
+            dest = current.dest
+            while(current != None):
+                if(current.val < min):
+                    min = current.val
+                    dest = current.dest
+                current = current.next
+            sum += min
+            planter(res,dest)
+        temp = temp.next
+    
+    return res,sum,is_all_nd_in_abr(graphe,res)*
+    
+def kruskal(graphe):
+    res = Arbre()
+    sum = 0
+    all_arretes = []
+    used_arretes = []
+    temp = graphe.entree
+    while(temp != None):
+        current = temp.ls
+        while(current != None):
+            all_arretes.append([temp.val,current.dest,current.val])
+            current = current.next
+        temp = temp.next
+    all_arretes.sort(key=lambda x: x[2])
+    for i in all_arretes:
+        if(not cycle_or_not(used_arretes)):
+            res.planter(res,i)
+            sum += i[2]
+            used_arretes.append(i)
+    return res,sum
+
+def cycle_or_not(liste):
+    for i in range(len(liste)):
+        temp = liste[i]
+        #format liste = [[depart,arrivé,poids],[depart,arrivé,poids]]
+        j = 1
+        while i + j < len(liste):
+            temp2 = liste[i+j]
+            if temp2[1] == temp[1]:
+                return True
+            j += 1
+    return False
+
+
+def is_all_nd_in_abr(graphe,abr):
+    temp = graphe.entree
+    while(temp != None):
+        if(not recherche_rec(abr,temp.val)):
+            return False
+        temp = temp.next
+    return True
+
+def multiple_val_abr_rec(abr):
+    #multiplie la valeur de tout les valeurs de l'arbre entre eux
+    if abr == None:
+        return 1
+    else:
+        return abr.val * multiple_val_abr_rec(abr.gauche) * multiple_val_abr_rec(abr.droit)
+    
+def multiple_val_abr_iter(abr):
+    #infixe
+    pile = LPile()
+    temp = abr
+    res = 1
+    while True:
+        while temp != None:
+            pile.empiller(temp)
+            temp = temp.gauche
+        if pile.est_vide():
+            break
+        temp = pile.sommet()
+        pile.depiler()
+        res *= temp.val
+        temp = temp.droit
+    return res

@@ -7,21 +7,12 @@ function convertKelvinToCelsius(temp) {
 async function getWeatherData(lat, lon, key) {
     const apilinkCurrent = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`;
     const apilinkForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`;
-
     const responseForecast = await fetch(apilinkForecast);
     const responseCurrent = await fetch(apilinkCurrent);
-
     const jsonFor = await responseForecast.json();
     const jsonCur = await responseCurrent.json();
-
     const globalWeatherCur = jsonCur.weather[0].main;
     const tempCur = convertKelvinToCelsius(jsonCur.main.temp_max);
-
-    console.log("Le minimum du jour : " + getMinDay(jsonFor) + "*C");
-    console.log("Le maximum du jour : " + getMaxDay(jsonFor) + "*C");
-    console.log("Le temps actuel : " + globalWeatherCur);
-    console.log("La temperature actuelle : " + tempCur + "*C");
-    
     return {
         "min": getMinDay(jsonFor),
         "max": getMaxDay(jsonFor),
