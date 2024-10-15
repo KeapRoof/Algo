@@ -1,1 +1,1 @@
-Algo pythob
+Algo python
